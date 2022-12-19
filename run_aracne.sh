@@ -4,7 +4,7 @@ COUNT_MATRIX="/home/daria/Rprojects/LV_SC_project/pbmc-cpm.tsv" # make sure it i
 OUTPUT_FOLDER="/home/daria/Rprojects/LV_SC_project/ARACNA_out/"
 MURINE_REGULATOR_FOLDER="/home/daria/Rprojects/single-cell-pipeline/ARACNe/mus/"
 REGULATOR_LIST=("cotf" "tf" "surface")
-$NBOOT = 200
+NBOOT = 200
 
 for REGULATOR in ${REGULATOR_LIST[@]};
 do
