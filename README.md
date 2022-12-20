@@ -3,6 +3,11 @@
 This repository contains customized metaVipern pipeline to analyze mice scRNA data. 
 
 ## How to use
+1. load all packages from requirements.R
+2. correct in the Rmd files the location of folders and files
+3. Install ARACNe-AP software using this guide: https://github.com/califano-lab/ARACNe-AP
+4. Run the pipeline. While rinning run_aracne.sh script change location of the folders in the script. 
+
 Example Folder structure:
 ```
 ── single-cell-pipeline
@@ -18,7 +23,7 @@ Example Folder structure:
             └── ARACNe-AP.jar
             
 ── single-cell-processing
-        └── run_aracne.R
+        └── run_aracne.sh
         └── scRNA_murine.Rmd
         └── requirements.R
 
@@ -29,9 +34,9 @@ Example Folder structure:
  ```
 
 ## Dependencies
-1) Seurat v3.1.1.
-2) SingleR package
+see requirements.R for that
 
 ## References
 https://github.com/califano-lab/single-cell-pipeline
+
 Cytoscape v3.3.0.
