@@ -4,7 +4,7 @@ This repository contains customized metaVipern pipeline to analyze mice scRNA da
 
 ## How to use
 Example Folder structure:
-
+```
 ── single-cell-pipeline
         └── functions
                   └── viper-utils.R 
@@ -26,7 +26,7 @@ Example Folder structure:
         └── sample_count_matrix.tsv
         └── human_atherosclerosis_count_matrix.tsv
         └── gene_dictionary.tsv
- 
+ ```
 
 ## Dependencies
 1) Seurat v3.1.1.
