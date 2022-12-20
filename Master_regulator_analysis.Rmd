@@ -4,6 +4,7 @@ output: html_document
 date: "2022-12-20"
 ---
 
+  
 ```{r}
 setwd('/home/daria/Rprojects/LV_SC_project/')
 .libPaths('/home/daria/Rprojects/single-cell-pipeline/project_packages/')
@@ -39,6 +40,7 @@ QCPlots(filt.mat, mur.mt)
 # run these if data was not normalized or transformed
 #cpm.mat <- CPMTransform(filt.mat)
 #rank.mat <- RankTransform(cpm.mat)
+
 ```
 
 ```
@@ -50,9 +52,9 @@ reference.
 ```{r}
 
 netw_file = "/home/daria/Rprojects/LV_SC_project/merged_net.tsv"
-RegProcess(netw_file, cpm.mat, out.dir = '/home/daria/Rprojects/LV_SC_project/ARACNA_out_2/', out.name = 'pbmc_r1-net-')
+RegProcess(netw_file, fin.mat, out.dir = '/home/daria/Rprojects/LV_SC_project/ARACNA_out_2/', out.name = 'pbmc_r1-net-')
 r1.net <- readRDS('/home/daria/Rprojects/LV_SC_project/ARACNA_out/pbmc_r1-net-pruned.rds')
-r1.pAct <- viper(filt.mat, r1.net, method = 'mad')
+r1.pAct <- viper(cpm.mat, r1.net, method = 'mad')
 ```
 We then inferred protein activity based on the combined regulatory network and gene
 expression signature.
@@ -94,7 +96,11 @@ T-test was conducted on transcription factor and cofactor activities between SMC
 populations with 100 bootstraps.
 
 ```{r}
-r2.MRs <- BTTestMRs(r2.pAct, r2.louvain,bootstrap.num = 100)
+r2.cbcMRs <- CBCMRs(r2.pAct) # identify the most representative proteins
+r2.pAct.cbc <- r2.pAct[r2.cbcMRs ,] # filter the protein activity matrix
+r2.louvain <- LouvainClust(r2.pAct.cbc) # perform clustering analysis
+
+r2.MRs <- BTTestMRs(r2.pAct, r2.louvain, bootstrap.num = 100)
 ```
 
 Top activated and repressed MRs and their target genes are visualized using Cytoscape v3.3.0.
@@ -108,26 +114,36 @@ Top.MRS = MR_UnWrap(r2.MRs, top = 10)
 Umap
 
 ```{r, fig.align = 'center', fig.width = 9, fig.height = 6}
-r2.cbcMRs <- CBCMRs(r2.pAct) # identify the most representative proteins
-r2.pAct.cbc <- r2.pAct[r2.cbcMRs ,] # filter the protein activity matrix
-r2.louvain <- LouvainClust(r2.pAct.cbc) # perform clustering analysis
+
 r2.cbcUMAP <- CustomUMAP(r2.pAct.cbc)
-plot=ClusterScatter(r2.cbcUMAP,r2.louvain, 'Viper Clustering (Louvain)')
+plot=ClusterScatter(r2.cbcUMAP, r2.louvain, 'Viper Clustering (Louvain)')
 plot
 ```
 
-```{r}
+```{r fig.align = 'center', fig.width = 9, fig.height = 6}
 markers <- c('Ly6a', 'Vcam1', 'Ly6c1') # markers of stem cells, endothelial cells, monocytes/macrophages differentiation (expected to be enriched in SMC derived cells)
 MarkerGrid(r2.cbcUMAP, r2.louvain, r2.pAct, markers, 'PBMC Marker Activity')
 ```
-
+```{r fig.align = 'center', fig.width = 9, fig.height = 6}
+markers <- c('Fn1') # markers of stem cells, endothelial cells, monocytes/macrophages differentiation (expected to be enriched in SMC derived cells)
+MarkerGrid(r2.cbcUMAP, r2.louvain, r2.pAct, markers, 'PBMC Marker Activity')
+```
 
 SingleR
 ```{r}
+library(SingleR)
+library(celldex)
+
+ref.data <- MouseRNAseqData(cell.ont="nonna")
+predictions <- SingleR(test=cpm.mat, assay.type.test=1, 
+    ref=ref.data, labels=ref.data$label.main)
+table(predictions$labels)
+
 ```
 
 
 ## notes:
-1) Networks can be improved if use combined RNA-seq data and scRNAseq data.
+
+1) Networks can be improved via combined RNA-seq data and scRNAseq data.
 2) Annotation can be improved if use data from Wirke 2019 (it is here: https://app.globus.org, search for 'Plaqview' public dataset); blocker -- need to request access to download data, though it is written as it is 'Public'
 3) Data from viper can be visualized in Seurat package. And combined with human data. 
