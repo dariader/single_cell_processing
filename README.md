@@ -26,11 +26,6 @@ Example Folder structure:
         └── run_aracne.sh
         └── scRNA_murine.Rmd
         └── requirements.R
-
-── additional_files
-        └── sample_count_matrix.tsv
-        └── human_atherosclerosis_count_matrix.tsv
-        └── gene_dictionary.tsv
  ```
 
 ## Dependencies
