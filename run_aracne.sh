@@ -1,11 +1,11 @@
 #!/bin/bash
 
-PATH_ARACNE_JAR="/home/daria/Rprojects/ARACNe-AP/dist/aracne.jar"
+PATH_ARACNE_JAR="/home/daria/Rprojects/ARACNe-AP/dist/aracne.jar" # path to jar
 COUNT_MATRIX="/home/daria/Rprojects/LV_SC_project/pbmc-cpm.tsv" # make sure it is in ARACNe-compatible format
-OUTPUT_FOLDER="/home/daria/Rprojects/LV_SC_project/ARACNA_out_2/"
-MURINE_REGULATOR_FOLDER="/home/daria/Rprojects/single-cell-pipeline/ARACNe/mus/"
+OUTPUT_FOLDER="/home/daria/Rprojects/LV_SC_project/ARACNA_out_2/" # desired ouput folder
+MURINE_REGULATOR_FOLDER="/home/daria/Rprojects/single-cell-pipeline/ARACNe/mus/" # folder with regulator lists 
 REGULATOR_LIST=("cotf" "tf" "surface")
-NBOOT=200
+NBOOT=200 # number of bootstraps
 ARACNE_DIR="/home/daria/Rprojects/single-cell-pipeline/ARACNe" # where all aracne R scripts are placed
 
 for REGULATOR in ${REGULATOR_LIST[@]};
@@ -31,4 +31,4 @@ Rscript ${ARACNE_DIR}/aracne_consolidate.r ${WORK_DIR} ${COUNT_MATRIX} ${REG_FIL
 done
 
 #consolidate regulators
-echo "Regulator       Target  MI" > merged_net.tsv| cat */bootstrapNetwork*| sort| sort -u| grep -v Regulator > "${OUTPUT_FOLDER}/merged_net.tsv"
+cat */bootstrapNetwork*| sort| sort -u| grep -v Regulator > "${OUTPUT_FOLDER}/merged_net.tsv" 
