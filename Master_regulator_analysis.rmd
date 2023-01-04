@@ -45,6 +45,12 @@ rank.mat = as.matrix(raw.mat)
 
 ```
 
+The data must first be saved in a format that is compatible with the Java based ARACNe-AP implementation included in this pipeline:
+
+```{r}
+ARACNeTable(rank.mat, '/home/daria/Rprojects/LV_SC_project/pbmc-cpm.tsv')
+```
+
 ```
 bash ./run_aracne.sh
 ```
