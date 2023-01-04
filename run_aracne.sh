@@ -2,11 +2,13 @@
 
 PATH_ARACNE_JAR="/home/daria/Rprojects/ARACNe-AP/dist/aracne.jar" # path to jar
 COUNT_MATRIX="/home/daria/Rprojects/LV_SC_project/pbmc-cpm.tsv" # make sure it is in ARACNe-compatible format
-OUTPUT_FOLDER="/home/daria/Rprojects/LV_SC_project/ARACNA_out_2/" # desired ouput folder
+OUTPUT_FOLDER="/home/daria/Rprojects/LV_SC_project/ARACNA_out_2/" # desired ouput folder, will be created if not exists
 MURINE_REGULATOR_FOLDER="/home/daria/Rprojects/single-cell-pipeline/ARACNe/mus/" # folder with regulator lists 
 REGULATOR_LIST=("cotf" "tf" "surface")
 NBOOT=200 # number of bootstraps
 ARACNE_DIR="/home/daria/Rprojects/single-cell-pipeline/ARACNe" # where all aracne R scripts are placed
+
+mkdir -p $OUTPUT_FOLDER
 
 for REGULATOR in ${REGULATOR_LIST[@]};
 do
