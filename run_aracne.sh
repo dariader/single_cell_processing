@@ -10,9 +10,12 @@ ARACNE_DIR="/home/daria/Rprojects/single-cell-pipeline/ARACNe" # where all aracn
 
 mkdir -p $OUTPUT_FOLDER
 
+
 for REGULATOR in ${REGULATOR_LIST[@]};
 do
 echo $REGULATOR;
+mkdir -p $OUTPUT_FOLDER/$REGULATOR
+
 # calculate threshold
 
  java -Xmx12G -jar $PATH_ARACNE_JAR -e $COUNT_MATRIX -o $OUTPUT_FOLDER/${REGULATOR}_network --tfs $MURINE_REGULATOR_FOLDER/${REGULATOR}-mus-current-symbol.dat --pvalue 1E-8 --threads 16 --pvalue 1e-8 --seed 666 --calculateThreshold
